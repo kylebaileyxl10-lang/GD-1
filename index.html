@@ -39,7 +39,7 @@
       var outputElement = document.getElementById('output');
 
       var Module = {
-        // CRITICAL: Tells the engine to look in "./GD-1/" instead of the root "/"
+        // This tells the engine to find index.wasm in the same folder
         locateFile: function(path) {
           return "./" + path;
         },
