@@ -39,16 +39,21 @@
       var outputElement = document.getElementById('output');
 
       var Module = {
-        // This ensures the engine finds the big .wasm file right next to index.html
+        // FIX 1: Locate the WASM file correctly
         locateFile: function(path) {
           return "./" + path;
         },
-        // THIS IS THE FIX: It tells the game logic where the Resources folder is
+        
+        // FIX 2: Prevent the engine from exiting early when it can't find a file
+        noExitRuntime: true,
+        
+        // FIX 3: Force the engine to look in the capitalized "Resources" folder
         preRun: [function() {
             if (typeof ENV !== 'undefined') {
                 ENV.RESOURCES_PATH = "./Resources";
             }
         }],
+
         print: function(text) {
           if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
           console.log(text);
@@ -82,7 +87,7 @@
           Module.setStatus(left ? 'Downloading Assets... (' + (this.totalDependencies-left) + '/' + this.totalDependencies + ')' : 'All assets loaded.');
         }
       };
-      Module.setStatus('Contacting Server...');
+      Module.setStatus('Launching Engine...');
       window.onerror = function() {
         Module.setStatus('Engine Error: Check Console (F12)');
         spinnerElement.style.display = 'none';
