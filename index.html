@@ -6,11 +6,11 @@
     <script src="./coi-serviceworker.js"></script>
     <title>Geometry Dash Engine - Emscripten</title>
     <style>
-      body { font-family: arial; margin: 0; padding: 0; background-color: #222; color: white; }
+      body { font-family: arial; margin: 0; padding: 0; background-color: #222; color: white; overflow: hidden; }
       .emscripten { padding-right: 0; margin-left: auto; margin-right: auto; display: block; }
       div.emscripten { text-align: center; padding: 10px; }
       div.emscripten_border { border: 2px solid #444; background-color: black; width: fit-content; margin: 20px auto; }
-      canvas.emscripten { border: 0px none; background-color: black; width: 800px; height: 600px; }
+      canvas.emscripten { border: 0px none; background-color: black; width: 800px; height: 600px; outline: none; }
       #status { font-weight: bold; color: #bbb; }
       #progress { height: 20px; width: 300px; }
       #output { width: 80%; height: 150px; margin: 20px auto; display: block; background-color: black; color: #00ff00; font-family: monospace; }
@@ -39,11 +39,11 @@
       var outputElement = document.getElementById('output');
 
       var Module = {
-        // Fix 1: Ensures index.wasm is found in the current folder
+        // This ensures the engine finds the big .wasm file right next to index.html
         locateFile: function(path) {
           return "./" + path;
         },
-        // Fix 2: Forces the engine to look for the "Resources" folder right here
+        // THIS IS THE FIX: It tells the game logic where the Resources folder is
         preRun: [function() {
             if (typeof ENV !== 'undefined') {
                 ENV.RESOURCES_PATH = "./Resources";
@@ -79,12 +79,12 @@
         totalDependencies: 0,
         monitorRunDependencies: function(left) {
           this.totalDependencies = Math.max(this.totalDependencies, left);
-          Module.setStatus(left ? 'Preparing Assets... (' + (this.totalDependencies-left) + '/' + this.totalDependencies + ')' : 'All assets loaded.');
+          Module.setStatus(left ? 'Downloading Assets... (' + (this.totalDependencies-left) + '/' + this.totalDependencies + ')' : 'All assets loaded.');
         }
       };
-      Module.setStatus('Downloading Game Data...');
+      Module.setStatus('Contacting Server...');
       window.onerror = function() {
-        Module.setStatus('Engine Error: Check Console');
+        Module.setStatus('Engine Error: Check Console (F12)');
         spinnerElement.style.display = 'none';
       };
     </script>
