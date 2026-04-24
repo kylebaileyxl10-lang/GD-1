@@ -39,7 +39,7 @@
       var outputElement = document.getElementById('output');
 
       var Module = {
-        // This tells the engine to look in the current folder, not the root
+        // CRITICAL: Tells the engine to look in "./GD-1/" instead of the root "/"
         locateFile: function(path) {
           return "./" + path;
         },
