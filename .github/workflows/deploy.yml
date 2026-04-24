@@ -3,13 +3,12 @@ on:
   push:
     branches: [main]
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
-          lfs: true # This allows the 20MB engine file to upload
+          lfs: true # CRITICAL: This pulls the 20MB engine file, not the 189B pointer
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -17,10 +16,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.' # Tells GitHub to look at your main folder
+          path: '.'
 
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
         id: deployment
         uses: actions/deploy-pages@v4
