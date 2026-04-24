@@ -39,11 +39,11 @@
       var outputElement = document.getElementById('output');
 
       var Module = {
-        // FIX 1: This ensures index.wasm is found in the current folder
+        // Fix 1: Ensures index.wasm is found in the current folder
         locateFile: function(path) {
           return "./" + path;
         },
-        // FIX 2: This forces the engine to look for the "Resources" folder RELATIVELY
+        // Fix 2: Forces the engine to look for the "Resources" folder right here
         preRun: [function() {
             if (typeof ENV !== 'undefined') {
                 ENV.RESOURCES_PATH = "./Resources";
